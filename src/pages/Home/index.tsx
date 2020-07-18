@@ -78,7 +78,7 @@ const Home: React.FC = () => {
             <Container >
                 {movies.map(movie => 
                        <div key={movie.id}>
-                            <a className='info'> <BsInfoCircleFill size={20}/> </a>
+                            <Link to={`/movie/${movie.id}`} className='info'> <BsInfoCircleFill size={20}/> </Link>
                             <a className='heart'>
                                 {selectedMovieId.includes(movie.id) ? 
                                 <BsHeartFill onClick={() => handleAddFavorites(movie.id)} size={20}/> 

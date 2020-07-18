@@ -30,7 +30,19 @@ const MovieInfo: React.FC = () => {
 
         loadMovieDetails();
     }, [params]);
-    
+    if(loading === true) {
+        return (
+        <>
+          <Header/>
+                <FavoriteList title='MY FAVORITE MOVIES'>
+                </FavoriteList>
+            <Title>  MOVIE INFO  </Title>
+            <MovieCard>
+              <Loading/>
+            </MovieCard>
+        </>); 
+      }
+
     return(
         <> 
             <Header/>

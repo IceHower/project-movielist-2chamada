@@ -31,7 +31,9 @@ export const MovieCard = styled.div `
   display: flex;
   align-content: center;
   justify-content: center;
-  
+  p {
+    padding-right: 10px;
+  }
   .back_page {
     color: #fff;
     width: 24px;
