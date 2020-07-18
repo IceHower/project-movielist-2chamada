@@ -5,6 +5,7 @@ import FavoriteList from '../../Components/FavoriteList';
 import IMovies from '../../services/Interfaces';
 import Container from './styles';
 import {BsHeart, BsHeartFill, BsInfoCircleFill} from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 
 
@@ -51,11 +52,12 @@ const Home: React.FC = () => {
     return(
         <>
             <Header/>
-            <FavoriteList>
+            <FavoriteList title='MY FAVORITES MOVIES' title2='MOVIES'>
             <Container>
             {favMovies.map(movie => 
                 <div key={movie.id}>
-                        <a className='heart'><BsHeartFill onClick={() => handleAddFavorites(movie.id)} size={25}/></a>
+                        <Link to={`/movie/${movie.id}`} className='info'> <BsInfoCircleFill size={20}/> </Link>
+                        <a className='heart'><BsHeartFill onClick={() => handleAddFavorites(movie.id)} size={20}/></a>
                         <img src={'https://image.tmdb.org/t/p/w185' + movie.poster_path} alt= {movie.title}/>
                     </div>)}  
             </Container>
@@ -76,12 +78,12 @@ const Home: React.FC = () => {
             <Container >
                 {movies.map(movie => 
                        <div key={movie.id}>
-                            <a className='info'> <BsInfoCircleFill size={25}/> </a>
+                            <a className='info'> <BsInfoCircleFill size={20}/> </a>
                             <a className='heart'>
                                 {selectedMovieId.includes(movie.id) ? 
-                                <BsHeartFill onClick={() => handleAddFavorites(movie.id)} size={25}/> 
+                                <BsHeartFill onClick={() => handleAddFavorites(movie.id)} size={20}/> 
                                 :
-                                <BsHeart onClick={() => handleAddFavorites(movie.id)} size={25}/>
+                                <BsHeart onClick={() => handleAddFavorites(movie.id)} size={20}/>
                                 } 
                             </a>
                             <img src={'https://image.tmdb.org/t/p/w185' + movie.poster_path} alt= {movie.title}/>

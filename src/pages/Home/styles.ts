@@ -17,6 +17,7 @@ const Container = styled.div `
     padding-left: 15px;
     transition: 0.3s;
     z-index : 100;
+    cursor: pointer;
   }
   .info {
     position: absolute;
@@ -27,6 +28,7 @@ const Container = styled.div `
     padding-left: 46px;
     transition: 0.3s;
     z-index : 100;
+    cursor: pointer;
   }
     img{
         flex:1;

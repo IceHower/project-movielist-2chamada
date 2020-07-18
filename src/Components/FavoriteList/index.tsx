@@ -1,15 +1,23 @@
 import React  from 'react';
-import FavoriteStyle from './styles'
-const FavoriteList: React.FC = (props) => {
+import FavoriteStyle from './styles';
+
+type FavoriteListProps = {
+    title: string,
+    title2: string,
+}
+
+const FavoriteList: React.FC<Partial<FavoriteListProps>> = (props) => {
 
     return(
         <>
         <FavoriteStyle>
         <hr/>
-            <h1>MY FAVORITES MOVIES</h1>
+            <div>
+                <h1>{props.title}</h1>
                 {props.children}
+            </div>
         <hr className='allMovies'/>
-            <h1>MOVIES</h1>
+            <h1>{props.title2}</h1>
         </FavoriteStyle>
         </>
     )
