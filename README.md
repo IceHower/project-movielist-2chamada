@@ -37,8 +37,8 @@ O projeto foi desenvolvido usando as tecnologias abaixo
 
 <a id="imagens"></a>
 ## :camera: Imagens:
-![Homepage](src/images/image.png)
-![Movieinfo](src/images/image2.png)
+![Homepage](src/assets/image.png)
+![Movieinfo](src/assets/image2.png)
 
 ## Este é um repositório para estudo criado para armazenar o conteúdo desenvolvido.
 
