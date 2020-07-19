@@ -15,7 +15,7 @@
 ## :bookmark: Sobre
 
 <strong>MY MOVIE LIST</strong> É uma aplicação web que se comunica com uma api publica de filmes e te mostra uma lista, aonde você pode ver as descrições dos filmes e adicionar a uma lista de favoritos.
-<a href="https://ice-pokedex.netlify.app/" target="_blank">Teste o site aqui.</a>
+<a href="https://mymovielistproject.netlify.app/" target="_blank">Teste o site aqui.</a>
 
 <a id="como-usar"></a>
 ## :computer: Como Usar
