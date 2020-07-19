@@ -3,9 +3,12 @@ import api from '../../services/Api';
 import Header from '../../Components/Header';
 import FavoriteList from '../../Components/FavoriteList';
 import Loading, {MovieCard, Title} from './styles';
+import Container from '../Home/styles';
 import IMovies from '../../services/Interfaces';
 import { useRouteMatch, Link } from 'react-router-dom';
 import {FiArrowLeft, FiSmile} from 'react-icons/fi';
+import {BsHeart, BsHeartFill, BsInfoCircleFill} from 'react-icons/bs';
+import Home from '../Home';
 
 
 interface MovieParams {
@@ -17,9 +20,24 @@ const MovieInfo: React.FC = () => {
     const key = '3d7bb86094b230337c40284f8ea62cec';
     const [movie, setMovie] = useState<IMovies>();
     const [loading, setLoading] = useState(false);
+     //Inicializa o state verificando se ja tem algum favorite movie salvo.
+     const [favMovies, setFavMovies] = useState<IMovies[]>(() => {
+        const storagedFavMovies = localStorage.getItem(
+            '@MovieFavorite:movies',
+        );
+
+        if (storagedFavMovies) {
+            return JSON.parse(storagedFavMovies);
+        }
+        return [];
+    });
+    //Salva no browsers os favorites movies toda vez que for alterado o state.
+    useEffect(() => {
+        localStorage.setItem('@MovieFavorite:movies', JSON.stringify(favMovies));
+    }, [favMovies]);
 
 
-
+    // Pega o id do filme passado como parametro, e busca o filme na api.
     useEffect(() => {
         setLoading(true);
         async function loadMovieDetails() {
@@ -30,11 +48,21 @@ const MovieInfo: React.FC = () => {
 
         loadMovieDetails();
     }, [params]);
+
+    // Aqui e um estado de loading caso o filme ainda nao tenha carregado.
     if(loading === true) {
         return (
         <>
           <Header/>
-                <FavoriteList title='MY FAVORITE MOVIES'>
+          <FavoriteList title='MY FAVORITES MOVIES'>
+                <Container>
+                {favMovies.map(movie => 
+                <div key={movie.id}>
+                        <Link to={`/movie/${movie.id}`} className='info'> <BsInfoCircleFill size={20}/> </Link>
+                        <a className='heart'><BsHeartFill size={20}/></a>
+                        <img src={'https://image.tmdb.org/t/p/w185' + movie.poster_path} alt= {movie.title}/>
+                    </div>)}  
+                </Container>
                 </FavoriteList>
             <Title>  MOVIE INFO  </Title>
             <MovieCard>
@@ -42,11 +70,19 @@ const MovieInfo: React.FC = () => {
             </MovieCard>
         </>); 
       }
-
+    // Retorna um card com mais detalhes do filme
     return(
         <> 
             <Header/>
-                <FavoriteList title='MY FAVORITE MOVIES'>
+            <FavoriteList title='MY FAVORITES MOVIES'>
+                <Container>
+                {favMovies.map(movie => 
+                <div key={movie.id}>
+                        <Link to={`/movie/${movie.id}`} className='info'> <BsInfoCircleFill size={20}/> </Link>
+                        <a className='heart'><BsHeartFill size={20}/></a>
+                        <img src={'https://image.tmdb.org/t/p/w185' + movie.poster_path} alt= {movie.title}/>
+                    </div>)}  
+                </Container>
                 </FavoriteList>
             <Title>  MOVIE INFO  </Title>
             <MovieCard>

@@ -10,11 +10,27 @@ import { Link } from 'react-router-dom';
 
 
 const Home: React.FC = () => {
+    // Minha key para acessar a api.
     const key = '3d7bb86094b230337c40284f8ea62cec';
     const [movies, setMovies] = useState<IMovies[]>([]);
-    const [favMovies, setFavMovies] = useState<IMovies[]>([]);
-    const [selectedMovieId, setSelectedMovieId] = useState<number[]>([])
-    const [searchMovie, setSearchMovie] = useState('a'); // Define o valor inicial como A para gerar as primeiras lista de filmes.
+    
+    const [selectedMovieId, setSelectedMovieId] = useState<number[]>([]);
+    // Define o valor inicial como A para gerar as primeiras lista de filmes.
+    const [searchMovie, setSearchMovie] = useState('a'); 
+    //Inicializa o state verificando se ja tem algum favorite movie salvo.
+    const [favMovies, setFavMovies] = useState<IMovies[]>(() => {
+        const storagedFavMovies = localStorage.getItem(
+            '@MovieFavorite:movies',
+        );  
+        if (storagedFavMovies) {
+            return JSON.parse(storagedFavMovies);
+        }
+        return [];
+    });
+    //Salva no browsers os favorites movies toda vez que for alterado o state.
+    useEffect(() => {
+        localStorage.setItem('@MovieFavorite:movies', JSON.stringify(favMovies));
+    }, [favMovies]);
     
     useEffect(() => {
         if(searchMovie === '') {
@@ -23,14 +39,14 @@ const Home: React.FC = () => {
        loadMovies();
    }, [searchMovie]);
 
-
+   // Só carrega os filmes que tiverem as poster images.
    async function loadMovies() {
        const response: Array<IMovies> = await (await api.get(`search/movie?query=${searchMovie}&api_key=${key}`)).data.results;
        const movieWithPoster: Array<IMovies> = await response.filter(movieWithPoster => movieWithPoster.poster_path !== null);
        console.log(movieWithPoster);
        setMovies([...movieWithPoster]);
    }
-
+   // Adiciona filmes nos favoritos e remove caso eles ja estejam.
    function handleAddFavorites(id: number) {
     const alreadyFavorite = favMovies.findIndex(alrdFav => alrdFav.id === id);
     if(alreadyFavorite >= 0) {
