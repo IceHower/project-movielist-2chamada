@@ -14,7 +14,14 @@ const Home: React.FC = () => {
     const key = '3d7bb86094b230337c40284f8ea62cec';
     const [movies, setMovies] = useState<IMovies[]>([]);
     
-    const [selectedMovieId, setSelectedMovieId] = useState<number[]>([]);
+    const [selectedMovieId, setSelectedMovieId] = useState<number[]>(() => {
+        const storagedIdsMovies = localStorage.getItem(
+            '@MovieFavorite:ids',
+        );
+        if (storagedIdsMovies) {
+            return JSON.parse(storagedIdsMovies)
+        }
+     return [] });
     // Define o valor inicial como A para gerar as primeiras lista de filmes.
     const [searchMovie, setSearchMovie] = useState('a'); 
     //Inicializa o state verificando se ja tem algum favorite movie salvo.
@@ -31,6 +38,10 @@ const Home: React.FC = () => {
     useEffect(() => {
         localStorage.setItem('@MovieFavorite:movies', JSON.stringify(favMovies));
     }, [favMovies]);
+
+    useEffect(() => {
+        localStorage.setItem('@MovieFavorite:ids', JSON.stringify(selectedMovieId));
+    }, [selectedMovieId]);
     
     useEffect(() => {
         if(searchMovie === '') {
