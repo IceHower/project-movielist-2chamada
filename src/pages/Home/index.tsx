@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import api from '../../services/Api';
 import Header from '../../Components/Header';
+import Footer from '../../Components/Footer';
 import FavoriteList from '../../Components/FavoriteList';
 import IMovies from '../../services/Interfaces';
 import Container from './styles';
@@ -117,6 +118,7 @@ const Home: React.FC = () => {
                        </div>       
                 )}
             </Container>
+            <Footer/>
 
            
         </>

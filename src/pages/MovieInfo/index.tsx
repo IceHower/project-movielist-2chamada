@@ -7,8 +7,8 @@ import Container from '../Home/styles';
 import IMovies from '../../services/Interfaces';
 import { useRouteMatch, Link } from 'react-router-dom';
 import {FiArrowLeft, FiSmile} from 'react-icons/fi';
-import {BsHeart, BsHeartFill, BsInfoCircleFill} from 'react-icons/bs';
-import Home from '../Home';
+import { BsHeartFill, BsInfoCircleFill} from 'react-icons/bs';
+import Footer from '../../Components/Footer';
 
 
 interface MovieParams {
@@ -20,6 +20,15 @@ const MovieInfo: React.FC = () => {
     const key = '3d7bb86094b230337c40284f8ea62cec';
     const [movie, setMovie] = useState<IMovies>();
     const [loading, setLoading] = useState(false);
+    const [selectedMovieId, setSelectedMovieId] = useState<number[]>(() => {
+        const storagedIdsMovies = localStorage.getItem(
+            '@MovieFavorite:ids',
+        );
+        if (storagedIdsMovies) {
+            return JSON.parse(storagedIdsMovies)
+        }
+     return [] });
+
      //Inicializa o state verificando se ja tem algum favorite movie salvo.
      const [favMovies, setFavMovies] = useState<IMovies[]>(() => {
         const storagedFavMovies = localStorage.getItem(
@@ -36,6 +45,10 @@ const MovieInfo: React.FC = () => {
         localStorage.setItem('@MovieFavorite:movies', JSON.stringify(favMovies));
     }, [favMovies]);
 
+    useEffect(() => {
+        localStorage.setItem('@MovieFavorite:ids', JSON.stringify(selectedMovieId));
+    }, [selectedMovieId]);
+
 
     // Pega o id do filme passado como parametro, e busca o filme na api.
     useEffect(() => {
@@ -49,6 +62,13 @@ const MovieInfo: React.FC = () => {
         loadMovieDetails();
     }, [params]);
 
+    function removeFavorites(id: number) {
+        const removeFavoriteMovie = favMovies.filter(favMovie => favMovie.id !== id);
+        const removeSelectedMovieId = selectedMovieId.filter(movieId => movieId !== id);
+        setSelectedMovieId(removeSelectedMovieId);
+        setFavMovies(removeFavoriteMovie);
+    }
+
     // Aqui e um estado de loading caso o filme ainda nao tenha carregado.
     if(loading === true) {
         return (
@@ -59,7 +79,7 @@ const MovieInfo: React.FC = () => {
                 {favMovies.map(movie => 
                 <div key={movie.id}>
                         <Link to={`/movie/${movie.id}`} className='info'> <BsInfoCircleFill size={20}/> </Link>
-                        <a className='heart'><BsHeartFill size={20}/></a>
+                        <a className='heart' ><BsHeartFill onClick={() => removeFavorites(movie.id)} size={20}/></a>
                         <img src={'https://image.tmdb.org/t/p/w185' + movie.poster_path} alt= {movie.title}/>
                     </div>)}  
                 </Container>
@@ -68,6 +88,7 @@ const MovieInfo: React.FC = () => {
             <MovieCard>
               <Loading/>
             </MovieCard>
+            <Footer/>
         </>); 
       }
     // Retorna um card com mais detalhes do filme
@@ -79,7 +100,7 @@ const MovieInfo: React.FC = () => {
                 {favMovies.map(movie => 
                 <div key={movie.id}>
                         <Link to={`/movie/${movie.id}`} className='info'> <BsInfoCircleFill size={20}/> </Link>
-                        <a className='heart'><BsHeartFill size={20}/></a>
+                        <a className='heart'><BsHeartFill onClick={() => removeFavorites(movie.id)} size={20}/></a>
                         <img src={'https://image.tmdb.org/t/p/w185' + movie.poster_path} alt= {movie.title}/>
                     </div>)}  
                 </Container>
@@ -102,6 +123,7 @@ const MovieInfo: React.FC = () => {
                 </div>
             </div>
             </MovieCard>
+            <Footer/>
         </> 
     )
 }
